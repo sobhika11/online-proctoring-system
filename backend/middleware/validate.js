@@ -16,6 +16,18 @@ exports.validateCreateTest = (req, res, next) => {
     return res.status(400).json({ error: "start_time and end_time are required" });
   }
 
+  const start = new Date(start_time);
+  const end = new Date(end_time);
+
+  if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+    return res.status(400).json({ error: "Invalid date format" });
+  }
+
+  if (start >= end) {
+    return res.status(400).json({ error: "start_time must be before end_time" });
+  }
+
+  next();
 };
 
 exports.validateTestCodeParam = (req, res, next) => {
