@@ -36,7 +36,14 @@ const testSchema = new mongoose.Schema(
     no_of_candidates_appear: {
       type: Number,
       default: 0
+    },
+    
+    total_threshold_warnings: {
+      type: Number,
+      default: 3
     }
+  },
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Test", testSchema);
