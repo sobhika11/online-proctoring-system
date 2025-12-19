@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
+
 const testAttemptSchema = new Schema(
   {
     testId: {
@@ -11,7 +12,22 @@ const testAttemptSchema = new Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
       required: true
+    },
+
+    status: {
+      type: String,
+      enum: ["STARTED", "SUBMITTED", "AUTO_SUBMITTED"],
+      default: "STARTED"
+    },
+    startedAt: {
+      type: Date,
+      default: Date.now
+    },
+    submittedAt: {
+      type: Date
     }
   },
   { timestamps: true }
 );
+
+module.exports = mongoose.model("TestAttempt", testAttemptSchema);
