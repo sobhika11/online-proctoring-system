@@ -13,7 +13,6 @@ const testAttemptSchema = new Schema(
       ref: "User",
       required: true
     },
-
     status: {
       type: String,
       enum: ["STARTED", "SUBMITTED", "AUTO_SUBMITTED"],
