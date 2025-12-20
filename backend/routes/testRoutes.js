@@ -15,32 +15,7 @@ const {
 
 const authRole = require("../middlewares/authRole");
 
-router.post(
-  "/create",
-  authRole(["admin"]),
-  validateCreateTest,
-  createTest
-);
 
-router.get(
-  "/admin/:test_code",
-  authRole(["admin"]),
-  validateTestCodeParam,
-  testAdminData
-);
-
-router.post(
-  "/register/:test_code",
-  authRole(["student"]),
-  validateTestCodeParam,
-  testRegister
-);
-
-router.get(
-  "/my-tests",
-  authRole(["admin"]),
-  userCreatedTests
-);
 
 const {
   createTest,
@@ -53,7 +28,12 @@ const {
   validateCreateTest,
   validateTestCodeParam
 } = require("../middlewares/validate");
-
+router.post(
+  "/create",
+  authRole(["admin"]),
+  validateCreateTest,
+  createTest
+);
 router.post("/create", validateCreateTest, createTest);
 router.get("/my-tests", userCreatedTests);
 router.post("/register/:test_code", validateTestCodeParam, testRegister);
