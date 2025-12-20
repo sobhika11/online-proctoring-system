@@ -34,6 +34,12 @@ router.post(
   validateCreateTest,
   createTest
 );
+router.get(
+  "/admin/:test_code",
+  authRole(["admin"]),
+  validateTestCodeParam,
+  testAdminData
+);
 router.post("/create", validateCreateTest, createTest);
 router.get("/my-tests", userCreatedTests);
 router.post("/register/:test_code", validateTestCodeParam, testRegister);
