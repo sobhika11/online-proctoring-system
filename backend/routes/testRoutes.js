@@ -40,6 +40,12 @@ router.get(
   validateTestCodeParam,
   testAdminData
 );
+router.post(
+  "/register/:test_code",
+  authRole(["student"]),
+  validateTestCodeParam,
+  testRegister
+);
 router.post("/create", validateCreateTest, createTest);
 router.get("/my-tests", userCreatedTests);
 router.post("/register/:test_code", validateTestCodeParam, testRegister);
