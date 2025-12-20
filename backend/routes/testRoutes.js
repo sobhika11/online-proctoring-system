@@ -1,0 +1,62 @@
+const express = require("express");
+const router = express.Router();
+
+const {
+  createTest,
+  userCreatedTests,
+  testRegister,
+  testAdminData
+} = require("../controllers/test.controller");
+
+const {
+  validateCreateTest,
+  validateTestCodeParam
+} = require("../middlewares/validate");
+
+const authRole = require("../middlewares/authRole");
+
+router.post(
+  "/create",
+  authRole(["admin"]),
+  validateCreateTest,
+  createTest
+);
+
+router.get(
+  "/admin/:test_code",
+  authRole(["admin"]),
+  validateTestCodeParam,
+  testAdminData
+);
+
+router.post(
+  "/register/:test_code",
+  authRole(["student"]),
+  validateTestCodeParam,
+  testRegister
+);
+
+router.get(
+  "/my-tests",
+  authRole(["admin"]),
+  userCreatedTests
+);
+
+const {
+  createTest,
+  userCreatedTests,
+  testRegister,
+  testAdminData
+} = require("../controllers/test.controller");
+
+const {
+  validateCreateTest,
+  validateTestCodeParam
+} = require("../middlewares/validate");
+
+router.post("/create", validateCreateTest, createTest);
+router.get("/my-tests", userCreatedTests);
+router.post("/register/:test_code", validateTestCodeParam, testRegister);
+router.get("/admin/:test_code", validateTestCodeParam, testAdminData);
+
+module.exports = router;
