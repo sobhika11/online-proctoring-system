@@ -39,3 +39,11 @@ exports.validateTestCodeParam = (req, res, next) => {
 
   next();
 };
+module.exports = function authRole(allowedRoles = []) {
+  return (req, res, next) => {
+    if (!req.user || !allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ msg: "Access denied: insufficient permissions" });
+    }
+    next();
+  };
+};
