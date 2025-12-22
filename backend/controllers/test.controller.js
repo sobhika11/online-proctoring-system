@@ -68,10 +68,24 @@ const testRegister = async (req, res) => {
     });
   }
 };
-exports.testAdminData = async (req, res) => {
+const testAdminData = async (req, res) => {
   try {
-    return res.status(200).json({ message: "testAdminData controller" });
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
+    const { test_code } = req.params;
+    const userRole = req.user.role;
+
+    if (userRole !== "admin") {
+      return res.status(403).json({ msg: "Access denied: Admins only" });
+    }
+
+    const candidates = await User.find({ test_code });
+
+    res.status(200).json({ candidates });
+
+  } catch (error) {
+    res.status(500).json({
+      msg: "Error fetching candidates for test",
+      error: error.message
+    });
   }
 };
+
