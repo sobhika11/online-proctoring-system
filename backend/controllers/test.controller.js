@@ -35,13 +35,31 @@ exports.userCreatedTests = async (req, res) => {
 };
 
 
-exports.testRegister = async (req, res) => {
+const testRegister = async (req, res) => {
   try {
-    return res.status(200).json({ message: "testRegister controller" });
-  } catch (err) {
-    return res.status(500).json({ error: err.message });
+    const { test_code } = req.params;
+    const userId = req.user.id;
+
+    if (!test_code) {
+      return res.status(400).json({ msg: "Test code is required" });
+    }
+
+    const test = await Test.findOne({ test_code });
+
+    if (!test) {
+      return res.status(404).json({ msg: "Invalid test code" });
+    }
+
+    res.status(200).json({ msg: "Test code is valid" });
+
+  } catch (error) {
+    res.status(500).json({
+      msg: "Error while validating test code",
+      error: error.message
+    });
   }
 };
+
 
 exports.testAdminData = async (req, res) => {
   try {
