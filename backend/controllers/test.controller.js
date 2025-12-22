@@ -2,11 +2,22 @@ const Test = require("../models/Test");
 
 exports.createTest = async (req, res) => {
   try {
-    return res.status(200).json({ message: "createTest controller" });
+    const test = new Test({
+      ...req.body,
+      userId: req.user._id
+    });
+
+    await test.save();
+
+    return res.status(201).json({
+      message: "Test created successfully",
+      test
+    });
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
 };
+
 
 exports.userCreatedTests = async (req, res) => {
   try {
