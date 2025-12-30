@@ -1,16 +1,17 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
+// Step 8 – Commit 1: TestAttempt schema (start exam support)
 const testAttemptSchema = new Schema(
   {
     testId: {
       type: Schema.Types.ObjectId,
-      ref: "Test",
+      ref: "test",  
       required: true
     },
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "user",   
       required: true
     },
     status: {
@@ -29,4 +30,4 @@ const testAttemptSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("TestAttempt", testAttemptSchema);
+module.exports = mongoose.model("testAttempt", testAttemptSchema);
