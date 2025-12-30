@@ -12,7 +12,9 @@ exports.createTest = async (req, res) => {
 
     // Create test 
     const test = new Test({
-      ...req.body,
+      test_name,
+      start_time,
+      end_time,
       test_code: shortid.generate() + "-" + shortid.generate(),
       userId: req.user._id
     });
@@ -28,7 +30,6 @@ exports.createTest = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
-
 
 exports.userCreatedTests = async (req, res) => {
   try {
