@@ -22,7 +22,9 @@ exports.startTest = async (req, res) => {
 
     const attempt = new TestAttempt({
       testId: test._id,
-      userId
+      userId,
+      status: "STARTED",
+      startedAt: new Date()
     });
 
     await attempt.save();
@@ -33,6 +35,7 @@ exports.startTest = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+
 exports.submitTest = async (req, res) => {
   try {
     const { test_code } = req.params;
