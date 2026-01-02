@@ -8,7 +8,7 @@ const app = express();
 
 app.use(express.json());
 app.use("/api/tests", testRoutes);
-app.use("/api/attempts", attemptRoutes);=
+app.use("/api/attempts", attemptRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
