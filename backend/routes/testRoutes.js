@@ -10,10 +10,9 @@ const {
 
 const {
   validateCreateTest,
-  validateTestCodeParam
-} = require("../middlewares/validate");
-
-const authRole = require("../middlewares/authRole");
+  validateTestCodeParam,
+  authRole
+} = require("../middleware/validate");
 
 // Main part -Admin creates test
 router.post(

@@ -4,9 +4,9 @@ const router = express.Router();
 const {
   startTest,
   submitTest
-} = require("./controllers/testAttempt");
+} = require("../controllers/testAttempt");
 
-const authRole = require("../middleware/authRole");
+const { authRole } = require("../middleware/validate");
 
 router.post(
   "/start/:test_code",
