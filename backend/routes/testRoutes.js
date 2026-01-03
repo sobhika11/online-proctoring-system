@@ -38,6 +38,7 @@ router.get("/admin/:test_code/review", authRole(["admin"]), adminReview);
 // This is for Student registers for test
 router.post(
   "/register/:test_code",
+  authenticate,
   authRole(["student"]),
   validateTestCodeParam,
   testRegister
