@@ -44,26 +44,32 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email, role } = req.body;
-    if (!email || !role) {
-      return res.status(400).json({ message: "Email and role required" });
+    const { email, password } = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
     }
-    let user = await User.findOne({ email });
+    const user = await User.findOne({ email });
     if (!user) {
-      user = await User.create({ email, role });
+      return res.status(404).json({ message: "User not found" });
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid password" });
     }
     const token = jwt.sign(
       { userId: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
-
     res.status(200).json({
       message: "Login successful",
       token,
-      role: user.role,
+      role: user.role
     });
+
   } catch (err) {
-    res.status(500).json({ message: "Login failed" });
+    console.error(err);
+    res.status(500).json({ message: "Login failed", error: err.message });
   }
 };
