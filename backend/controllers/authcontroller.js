@@ -4,14 +4,10 @@ const User = require("../models/user");
 exports.login = async (req, res) => {
   try {
     const { email, role } = req.body;
-
     if (!email || !role) {
       return res.status(400).json({ message: "Email and role required" });
     }
-
-    // find or create user (simple auth)
     let user = await User.findOne({ email });
-
     if (!user) {
       user = await User.create({ email, role });
     }
