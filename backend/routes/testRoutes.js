@@ -1,11 +1,12 @@
 const express = require("express");
+const authenticate = require("../middleware/auth"); 
 const router = express.Router();
-
 const {
   createTest,
   userCreatedTests,
   testRegister,
-  testAdminData
+  testAdminData,
+  adminReview
 } = require("../controllers/test.controller");
 
 const {
@@ -17,6 +18,7 @@ const {
 // Main part -Admin creates test
 router.post(
   "/create",
+  authenticate,      
   authRole(["admin"]),
   validateCreateTest,
   createTest
@@ -29,6 +31,9 @@ router.get(
   validateTestCodeParam,
   testAdminData
 );
+
+// Admin review route
+router.get("/admin/:test_code/review", authRole(["admin"]), adminReview);
 
 // This is for Student registers for test
 router.post(
