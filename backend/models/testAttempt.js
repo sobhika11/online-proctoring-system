@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-
-// Step 8 – Commit 1: TestAttempt schema (start exam support)
 const testAttemptSchema = new Schema(
   {
     testId: {
