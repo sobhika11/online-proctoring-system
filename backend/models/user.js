@@ -3,7 +3,6 @@ const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
       trim: true
     },
 
@@ -15,14 +14,17 @@ const userSchema = new mongoose.Schema(
     },
 
     password: {
-      type: String,
-      required: true
+      type: String
     },
 
     role: {
       type: String,
-      enum: ["admin", "candidate"],
+      enum: ["admin", "student"],
       default: "candidate"
+    },
+
+    test_code: {
+      type: String
     }
   },
   { timestamps: true }
