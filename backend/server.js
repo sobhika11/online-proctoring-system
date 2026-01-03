@@ -5,7 +5,9 @@ require("dotenv").config();
 const testRoutes = require("./routes/testRoutes");
 const attemptRoutes = require("./routes/attemptRoutes");
 const app = express();
+const authRoutes = require("./routes/authRoutes");
 
+app.use("/api/auth", authRoutes);
 app.use(express.json());
 app.use("/api/tests", testRoutes);
 app.use("/api/attempts", attemptRoutes);
@@ -22,7 +24,7 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB connected");
-    app.listen(process.env.PORT || 5000, () => {
+    app.listen(process.env.PORT || 2000, () => {
       console.log("Server running");
     });
   })
