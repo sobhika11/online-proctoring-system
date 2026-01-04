@@ -4,12 +4,12 @@ const testAttemptSchema = new Schema(
   {
     testId: {
       type: Schema.Types.ObjectId,
-      ref: "test",  
+      ref: "Test",  
       required: true
     },
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "user",   
+      ref: "User",   
       required: true
     },
     status: {
