@@ -41,6 +41,10 @@ const testSchema = new mongoose.Schema(
     total_threshold_warnings: {
       type: Number,
       default: 3
+    },
+    avg_duration: {
+      type: Number,
+      default: 0
     }
   },
   { timestamps: true }
