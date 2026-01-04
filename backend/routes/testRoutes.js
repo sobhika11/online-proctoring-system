@@ -47,6 +47,7 @@ router.post(
 // This is for Admin views tests created by them
 router.get(
   "/my-tests",
+  authenticate,
   authRole(["admin"]),
   userCreatedTests
 );
