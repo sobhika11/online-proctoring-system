@@ -27,13 +27,14 @@ router.post(
 // This part for Admin views candidates of a test
 router.get(
   "/admin/:test_code",
+  authenticate,
   authRole(["admin"]),
   validateTestCodeParam,
   testAdminData
 );
 
 // Admin review route
-router.get("/admin/:test_code/review", authRole(["admin"]), adminReview);
+router.get("/admin/:test_code/review", authenticate, authRole(["admin"]), adminReview);
 
 // This is for Student registers for test
 router.post(
