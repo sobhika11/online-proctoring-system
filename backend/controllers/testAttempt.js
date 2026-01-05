@@ -5,12 +5,10 @@ exports.startTest = async (req, res) => {
   try {
     const { test_code } = req.params;
     const userId = req.user._id;
-
     const test = await Test.findOne({ test_code });
     if (!test) {
       return res.status(404).json({ msg: "Test not found" });
     }
-
     const now = new Date();
 
     // TIME CONTROL - can't start before start_time or after end_time
