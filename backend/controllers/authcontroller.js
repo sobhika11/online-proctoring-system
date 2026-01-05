@@ -17,13 +17,7 @@ exports.register = async (req, res) => {
       name,
       email,
       password: hashedPassword,
-      role,
-      warnings: {
-        person_detected: 0,
-        voice_detected: 0,
-        face_covered: 0,
-      },
-      status: "safe",
+      role
     });
 
     await user.save();
