@@ -1,5 +1,7 @@
 const TestAttempt = require("../models/testAttempt");
 const Test = require("../models/test");
+const { lockAnswers } = require("./answer.controller");
+const { evaluateAttempt } = require("./evaluation.controller");
 
 exports.startTest = async (req, res) => {
   try {
@@ -73,6 +75,9 @@ exports.submitTest = async (req, res) => {
       attempt.status = "AUTO_SUBMITTED";
       attempt.submittedAt = test.end_time;
       await attempt.save();
+      // Lock answers and evaluate
+      await lockAnswers(attempt._id);
+      await evaluateAttempt(attempt._id);
       return res.status(403).json({ msg: "Time over, exam auto-submitted" });
     }
 
@@ -91,6 +96,9 @@ exports.submitTest = async (req, res) => {
     attempt.status = "SUBMITTED";
     attempt.submittedAt = now;
     await attempt.save();
+    // Lock answers and evaluate
+    await lockAnswers(attempt._id);
+    await evaluateAttempt(attempt._id);
     return res.status(200).json({ msg: "Test submitted successfully" });
   } catch (err) {
     return res.status(500).json({ error: err.message });
