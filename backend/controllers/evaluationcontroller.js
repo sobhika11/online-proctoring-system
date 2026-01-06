@@ -83,3 +83,44 @@ exports.evaluateAttempt = async (attemptId) => {
     throw err;
   }
 };
+
+// Get evaluation results for an attempt
+exports.getEvaluationResults = async (req, res) => {
+  try {
+    const { test_code } = req.params;
+    const userId = req.user._id;
+
+    const test = await Test.findOne({ test_code });
+    if (!test) {
+      return res.status(404).json({ msg: "Test not found" });
+    }
+    const attempt = await TestAttempt.findOne({
+      testId: test._id,
+      userId
+    }).populate("testId");
+    if (!attempt) {
+      return res.status(404).json({ msg: "Attempt not found" });
+    }
+    // If not evaluated yet and attempt is submitted, evaluate now
+    if (!attempt.evaluation && (attempt.status === "SUBMITTED" || attempt.status === "AUTO_SUBMITTED")) {
+      await exports.evaluateAttempt(attempt._id);
+      // Reload attempt to get evaluation
+      await attempt.populate("testId");
+      const updatedAttempt = await TestAttempt.findById(attempt._id);
+      return res.status(200).json({
+        attempt: updatedAttempt,
+        evaluation: updatedAttempt.evaluation,
+        details: updatedAttempt.evaluationDetails
+      });
+    }
+    return res.status(200).json({
+      attempt,
+      evaluation: attempt.evaluation || null,
+      details: attempt.evaluationDetails || null
+    });
+
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
+
