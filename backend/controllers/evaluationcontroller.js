@@ -65,4 +65,30 @@ exports.evaluateAttempt = async (attemptId) => {
         correctOption: question.correctOption,
         marks
       };
-    });
+    }); 
+    // Store evaluation results in attempt
+    attempt.evaluation = {
+      correctCount,
+      wrongCount,
+      unansweredCount,
+      totalScore,
+      maxMarks,
+      percentage: maxMarks > 0 ? ((totalScore / maxMarks) * 100).toFixed(2) : 0,
+      evaluatedAt: new Date()
+    };
+    attempt.evaluationDetails = evaluationDetails;
+    await attempt.save();
+    return {
+      correctCount,
+      wrongCount,
+      unansweredCount,
+      totalScore,
+      maxMarks,
+      percentage: attempt.evaluation.percentage
+    };
+
+  } catch (err) {
+    console.error("Evaluation error:", err);
+    throw err;
+  }
+};
