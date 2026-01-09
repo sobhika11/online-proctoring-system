@@ -11,4 +11,15 @@ exports.evaluateAttempt = async (attemptId) => {
     if (!attempt) {
       throw new Error("Attempt not found");
     }
+    // Prevent double evaluation
+    if (attempt.evaluation && attempt.evaluation.evaluatedAt) {
+      return {
+        correctCount: attempt.evaluation.correctCount,
+        wrongCount: attempt.evaluation.wrongCount,
+        unansweredCount: attempt.evaluation.unansweredCount,
+        totalScore: attempt.evaluation.totalScore,
+        maxMarks: attempt.evaluation.maxMarks,
+        percentage: attempt.evaluation.percentage
+      };
+    }
   
