@@ -24,3 +24,19 @@ exports.startTest = async (req, res) => {
       testId: test._id,
       userId
     });
+    if (existingAttempt) {
+      return res.status(400).json({ msg: "Test already started" });
+    }
+    const attempt = new TestAttempt({
+      testId: test._id,
+      userId,
+      status: "STARTED",
+      startedAt: now
+    });
+    await attempt.save();
+    return res.status(201).json({ msg: "Test started", attempt });
+
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+};
