@@ -21,5 +21,19 @@ exports.evaluateAttempt = async (attemptId) => {
         maxMarks: attempt.evaluation.maxMarks,
         percentage: attempt.evaluation.percentage
       };
-    }
-  
+    }  
+    // Get all answers for this attempt
+    const answers = await Answer.find({ attemptId: attempt._id });
+
+    // Get all questions for this test
+    const questions = await Question.find({ testId: attempt.testId._id });
+    let correctCount = 0;
+    let wrongCount = 0;
+    let unansweredCount = 0;
+    let totalScore = 0;
+    let maxMarks = 0;
+
+    // Calculate max marks
+    questions.forEach(q => {
+      maxMarks += q.marks || 1;
+    });
