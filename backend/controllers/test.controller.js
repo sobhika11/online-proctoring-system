@@ -61,6 +61,18 @@ exports.testRegister = async (req, res) => {
     return res.status(500).json({ msg: "Error registering for test", error: error.message });
   }
 };
+exports.testAdminData = async (req, res) => {
+  try {
+    const { test_code } = req.params;
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ msg: "Access denied: Admins only" });
+    }
+    const candidates = await User.find({ test_code });
+    return res.status(200).json({ candidates });
+  } catch (error) {
+    return res.status(500).json({ msg: "Error fetching candidates", error: error.message });
+  }
+};
 
 
 
