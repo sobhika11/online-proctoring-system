@@ -25,4 +25,17 @@ exports.createTest = async (req, res) => {
     return res.status(500).json({ error: err.message });
   }
 };
+exports.userCreatedTests = async (req, res) => {
+  try {
+    const tests = await Test.find({ userId: req.user._id });
+    return res.status(200).json({
+      count: tests.length,
+      tests
+    });
+
+  } catch (err) {
+    return res.status(500).json({ error: "Failed to fetch tests" });
+  }
+};
+
 
