@@ -74,5 +74,25 @@ exports.testAdminData = async (req, res) => {
   }
 };
 
-
-
+exports.adminReview = async (req, res) => {
+  try {
+    const { test_code } = req.params;
+    const test = await Test.findOne({ test_code });
+    if (!test) return res.status(404).json({ msg: "Test not found" });
+    const attempts = await TestAttempt.find({ testId: test._id })
+      .populate("userId", "email role");
+    const review = attempts.map(a => ({
+      student: a.userId,
+      attempt: {
+        status: a.status,
+        startedAt: a.startedAt,
+        submittedAt: a.submittedAt,
+        warnings: a.warnings || {}
+      }
+    }));
+    res.status(200).json({ test: test.test_name, review });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ msg: "Server error" });
+  }
+};
