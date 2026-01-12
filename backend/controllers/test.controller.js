@@ -38,4 +38,29 @@ exports.userCreatedTests = async (req, res) => {
   }
 };
 
+exports.testRegister = async (req, res) => {
+  try {
+    const { test_code } = req.params;
+    const userId = req.user._id;
+    if (!test_code) {
+      return res.status(400).json({ msg: "Test code is required" });
+    }
+    const test = await Test.findOne({ test_code });
+    if (!test) {
+      return res.status(404).json({ msg: "Invalid test code" });
+    }
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ msg: "User not found" });
+    if (user.test_code === test_code) {
+      return res.status(400).json({ msg: "Already registered for this test" });
+    }
+    user.test_code = test_code;
+    await user.save();
+    return res.status(200).json({ msg: "Successfully registered for the test" });
+  } catch (error) {
+    return res.status(500).json({ msg: "Error registering for test", error: error.message });
+  }
+};
+
+
 
